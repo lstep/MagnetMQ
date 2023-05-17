@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "magnetmq"
+version = "0.1.0"
+description = "Monitor the clipboard and if it detects a magnet link, send it to MQTT"
+authors = ["Luc Stepniewski <lior@gradstein.info>"]
+license = "GPL 3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+paho-mqtt = "^1.6.1"
+pyperclip = "^1.8.2"
+argparse = "^1.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
