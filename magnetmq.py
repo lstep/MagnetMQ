@@ -20,24 +20,35 @@ topic = os.environ.get("MQTT_TOPIC") or args.topic or "your_topic"
 username = os.environ.get("MQTT_USERNAME") or args.username or "your_username"
 password = os.environ.get("MQTT_PASSWORD") or args.password or "your_password"
 
-# Connect to the MQTT broker
-client = mqtt.Client()
-if args.username is not None and args.password is not None:
-    client.username_pw_set(args.username, args.password)
-client.connect(args.broker, args.port)
-
-# Function to check if the text is a magnet link
 def is_magnet_link(text):
+    """
+    Determines if a given string of text is a valid magnet link.
+
+    Args:
+        text (str): The text to be checked.
+
+    Returns:
+        bool: True if the text is a valid magnet link, False otherwise.
+    """
     magnet_pattern = r'^magnet:\?xt=urn:btih:[a-zA-Z0-9]{32,40}.*$'
     return bool(re.match(magnet_pattern, text))
+    
+if 1:
+    # Connect to the MQTT broker
+    client = mqtt.Client()
+    if args.username is not None and args.password is not None:
+        client.username_pw_set(args.username, args.password)
+    client.connect(args.broker, args.port)
 
-# Monitor the clipboard for magnet links
-previous_clipboard_content = ""
-while True:
-    current_clipboard_content = pyperclip.waitForNewPaste()
-    if current_clipboard_content != previous_clipboard_content:
-        if is_magnet_link(current_clipboard_content):
-            print("Magnet link detected:", current_clipboard_content)
-            #client.publish(topic, current_clipboard_content)
-            print("new content: ", current_clipboard_content)
-        previous_clipboard_content = current_clipboard_content
+    # Function to check if the text is a magnet link
+
+
+    # Monitor the clipboard for magnet links
+    previous_clipboard_content = ""
+    while True:
+        current_clipboard_content = pyperclip.waitForNewPaste()
+        if current_clipboard_content != previous_clipboard_content:
+            if is_magnet_link(current_clipboard_content):
+                print("Magnet link detected:", current_clipboard_content)
+                client.publish(topic, current_clipboard_content)
+            previous_clipboard_content = current_clipboard_content
